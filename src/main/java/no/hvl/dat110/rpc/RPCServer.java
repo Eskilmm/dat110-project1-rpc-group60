@@ -38,8 +38,7 @@ public class RPCServer {
 		
 		while (!stop) {
 	    
-		   byte rpcid = 0;
-		   Message requestmsg, replymsg;
+		  
 		   
 		   // TODO - START
 		   // - receive a Message containing an RPC request
@@ -50,15 +49,44 @@ public class RPCServer {
 		   // - encapsulate return value 
 		   // - send back the message containing the RPC reply
 			
-		   if (true)
-				throw new UnsupportedOperationException(TODO.method());
+		  //1
+			
+		   Message requestmsg = connection.receive();
+		   byte [] requestData = requestmsg.getData();
 		   
-		   // TODO - END
-
-			// stop the server if it was stop methods that was called
-		   if (rpcid == RPCCommon.RPIDSTOP) {
-			   stop = true;
+		   //2
+		   
+		   byte rpcid = requestData[0]; // Første byte
+		   
+		   //3 
+		   
+		   byte[] param = RPCUtils.decapsulate(requestData); //Decapsulate melding
+		   
+		   //4
+		   
+		   RPCRemoteImpl service = services.get(rpcid);
+		   
+		   byte[] result;
+		   if (service != null) {
+			   
+			   result= service.invoke(param);
+		
+			   
+		   } else {
+			   
+			   System.out.println("System is not regitsered for rpcid: " + rpcid);
+			   result = new byte[0];
 		   }
+		   
+		   //5
+		   
+		   byte[] replyData = RPCUtils.encapsulate(rpcid, result);
+		   Message replymsg = new Message(replyData);
+		   
+		   //6
+		   
+		   connection.send(replymsg);
+		 
 		}
 	
 	}

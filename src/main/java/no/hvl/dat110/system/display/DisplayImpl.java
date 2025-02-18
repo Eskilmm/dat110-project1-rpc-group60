@@ -1,6 +1,7 @@
 package no.hvl.dat110.system.display;
 
 import no.hvl.dat110.TODO;
+
 import no.hvl.dat110.rpc.RPCRemoteImpl;
 import no.hvl.dat110.rpc.RPCUtils;
 import no.hvl.dat110.rpc.RPCServer;
@@ -11,23 +12,20 @@ public class DisplayImpl extends RPCRemoteImpl {
 		super(rpcid,rpcserver);
 	}
 
+
 	public void write(String message) {
 		System.out.println("DISPLAY:" + message);
 	}
 	
 	public byte[] invoke(byte[] param) {
 		
-		byte[] returnval = null;
+		String message = RPCUtils.unmarshallString(param);
 		
-		// TODO - START: 
-		// implement unmarshalling, call, and marshall for write RPC method
-		// look at how this is done in the SensorImpl class for the read method
+		write(message);
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
 		
-		// TODO - END
 		
-		return returnval;
+		
+		return RPCUtils.marshallVoid();
 	}
 }
