@@ -86,9 +86,13 @@ public class RPCServer {
 		   //6
 		   
 		   connection.send(replymsg);
+		   
+		// stop the server if it was stop methods that was called
+		   if (rpcid == RPCCommon.RPIDSTOP) {
+			   stop = true;
 		 
 		}
-	
+		}
 	}
 	
 	// used by server side method implementations to register themselves in the RPC server

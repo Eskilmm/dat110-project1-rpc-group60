@@ -24,7 +24,7 @@ public class DisplayDevice {
 		
 		rpcServer.run();
 		
-		
+		rpcServer.stop();
 		
 		
 		
